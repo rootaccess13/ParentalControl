@@ -8,7 +8,7 @@ SECRET_KEY = 'django-insecure-u_^k(f29bwxa^$22ems3vb_c22y3ba^()s&)h+^_&u-bt+v)th
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'parentalcontrolextension.herokuapp.com']
 
 
 INSTALLED_APPS = [
