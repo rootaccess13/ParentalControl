@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+
+  "name": "Parental Controls",
+  "description": "Block all malicious and inappropriate websites.",
+  "version": "1.0",
+  "action": {
+    "default_popup": "templates/api/entry.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_page": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; 'unsafe-inline';"
+  } ,
+  "declarative_net_request" : {
+    "rule_resources" : [{
+      "id": "ruleset_1",
+      "enabled": true,
+      "path": "rules_1.json"
+    }]
+  },
+"permissions": [
+  "webRequest",
+  "declarativeNetRequest",
+  "declarativeNetRequestFeedback",
+  "tabs",
+  "downloads",
+  "storage",
+  "history",
+  "system"
+],
+"host_permissions": [
+  "https://127.0.0.1:8000/*"
+]
+}

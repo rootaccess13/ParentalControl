@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parental Control</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <script src="./css/bootstrap.min.js"></script>
+    <script src="./css/popper.js"></script>
+  </head>
+<style>
+    body {
+        width: 100%;
+        margin: 10px 10px 10px 10px;
+        padding: 20px;
+    }
+    #logoutTrigger {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    #logoutTrigger:hover {
+        color: red;
+    }
+</style>
+<body>
+    <div class="container mb-2">
+        <div class="d-flex justify-content-between">
+            <h3>Welcome, <a href="#" id="userLogged"></a>.</h1>
+                <p id="logoutTrigger">Logout</p>
+        </div>
+        <div class="card mb-2" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title" id="browserType"></h5>
+              <h6 class="card-subtitle mb-2 text-muted" id="appVersion"></h6>
+                <ul>
+                    <li>Status : Active - Running</li>
+                </ul>
+              <a href="#" id="activity" class="card-link">Activity</a>
+            </div>
+          </div>
+          <p id="list"></p>
+    </div>
+
+    <script src="./css/axios.min.js"></script>
+    <script src="./core_dashboard.js"></script>
+</body>
+
+</html>

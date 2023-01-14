@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parental Control</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <script src="./css/bootstrap.min.js"></script>
+    <script src="./css/popper.js"></script>
+
+
+  </head>
+<style>
+    body {
+        width: 300px;
+        margin: 10px 10px 10px 10px;
+        padding: 20px;
+    }
+    .head {
+        text-align: center;
+    }
+</style>
+<body>
+    <div class="container mb-2">
+      <h1 class="head">Create Guardian Account</h1>
+        <form class="mb-2" method="POST" enctype="multipart/form-data" id="registerForm">
+            <div class="mb-2">
+              <label for="email" class="form-label">Email address</label>
+              <input type="email" class="form-control form-control-sm" id="email" aria-describedby="emailHelp" placeholder="e.g: johndoe@mail.com">
+            </div>
+            <div class="mb-2">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control form-control-sm" id="username" aria-describedby="emailHelp" placeholder="e.g: john123">
+            </div>
+            <div class="mb-2">
+              <label for="pass1" class="form-label">Password</label>
+              <input type="password" class="form-control form-control-sm" id="pass1" placeholder="......">
+            </div>
+            <div class="mb-2">
+              <label for="pass2" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control form-control-sm" id="pass2" placeholder="......">
+            </div>
+            <div class="mb-2">
+              <label for="firstname" class="form-label">Firstname</label>
+              <input type="text" class="form-control form-control-sm" id="firstname" placeholder="e.g: John">
+            </div>
+            <div class="mb-2">
+              <label for="lastname" class="form-label">Lastname</label>
+              <input type="text" class="form-control form-control-sm" id="lastname" placeholder="e.g: Doe">
+            </div>
+
+            <div class="mb-2">
+              <button type="submit" class="btn btn-sm btn-primary">Register</button>
+              <a href="./login.html">Sign in</a>
+            </div>
+          </form>
+    </div>
+
+    <script src="./css/axios.min.js"></script>
+    <script src="./core_auth.js"></script>
+</body>
+
+</html>
