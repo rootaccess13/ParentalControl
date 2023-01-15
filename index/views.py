@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from api.models import Profile, UrlType, URLBlacklist, ReportURL
 
 def index(request):
