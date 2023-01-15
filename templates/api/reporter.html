@@ -118,7 +118,7 @@
     if(reportForm){
         reportForm.addEventListener('submit', function(e){
             e.preventDefault();
-            let api_url = 'http://127.0.0.1:8000/api/v1/report/';
+            let api_url = 'https://parentalcontrolextension.herokuapp.com/api/v1/report/';
             let url = document.getElementById('url').value;
             let data = {
                 'url': url,
@@ -137,9 +137,6 @@
                     document.getElementById('toast-success').classList.remove('hidden');
                     document.getElementById('toast-success').classList.add('flex');
                     return response.json();
-                }
-                else{
-                    throw new Error('Something went wrong on api server!');
                 }
             })
             .then(data => {
