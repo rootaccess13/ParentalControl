@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import UrlType, Profile, URLBlacklist
-from . serializers import RegisterSerializer, URLSerializer, ProfileSerializer, URLBlacklistSerializer
+from .models import UrlType, Profile, URLBlacklist, ReportURL
+from . serializers import *
 from rest_framework import status
 from rest_framework.generics import (
     ListCreateAPIView, RetrieveUpdateDestroyAPIView)
@@ -76,3 +76,19 @@ class URLBlacklistList(viewsets.ModelViewSet):
         serializer = self.get_serializer(self.get_queryset(), many=True)
         return Response(serializer.data)
 
+class ReportURLView(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
+    queryset = ReportURL.objects.all()
+    serializer_class = ReportSerializer
+
+    @action(detail=False, methods=['get'])
+    def get(self, request):
+        serializer = self.get_serializer(self.get_queryset(), many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['post'])
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

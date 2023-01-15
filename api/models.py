@@ -38,3 +38,17 @@ class URLBlacklist(models.Model):
 
     def __str__(self):
         return f'{self.url} - {self.type}'
+
+
+class ReportURL(models.Model):
+    user = models.CharField(max_length=50, blank=True, null=True)
+    url = models.URLField(max_length=200, blank=True, null=True)
+    type = models.CharField(
+        max_length = 20,
+        choices = TYPE,
+        default = 'adult'
+        )
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} - {self.url} - {self.type}'

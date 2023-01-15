@@ -69,3 +69,9 @@ class URLBlacklistSerializer(serializers.ModelSerializer):
     class Meta:
         model = URLBlacklist
         fields = '__all__'
+    
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReportURL
+        fields = '__all__'
