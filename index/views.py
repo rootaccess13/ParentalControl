@@ -11,7 +11,7 @@ def dashboard(request):
     return render(request, 'api/dashboard.html')
 
 def reporter(request):
-    if reques.method == 'POST':
+    if request.method == 'POST':
         url = request.POST.get('url')
         report_url = ReportURL(url=url)
         report_url.save()
