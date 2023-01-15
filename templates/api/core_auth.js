@@ -31,3 +31,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       window.location.href = request.url;
     }
   });
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+  if(request.type === "invalid_auth"){
+    document.getElementById('toast-danger').classList.remove('hidden');
+    document.getElementById('toast-danger').classList.add('flex');
+    document.getElementById('messages').innerHTML = request.message;
+  }
+});

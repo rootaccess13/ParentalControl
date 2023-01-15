@@ -8,13 +8,22 @@
         authenticate(username, password).then(token => {
           // Do something with the token
           console.log(token.access)
-          chrome.storage.local.set({token: token}, function() {
-            console.log("Token saved to storage" + token.access);
-            // redirect to dashboard.html
-            chrome.runtime.sendMessage({type: "redirect", url: "dashboard.html"});
+          if(token.access == undefined){
+              console.log(token['detail'])
+              if(token['detail'] === "No active account found with the given credentials"){
+                chrome.runtime.sendMessage({type: "invalid_auth", message: token['detail']});
+              }
+          }else{
+            chrome.storage.local.set({token: token}, function() {
+              console.log("Token saved to storage" + token.access);
+              // redirect to dashboard.html
+              chrome.runtime.sendMessage({type: "redirect", url: "dashboard.html"});
+  
+            });
+          }
 
-          });
-        }).catch(error => {
+        })
+        .catch(error => {
           // Handle error
           console.log(error)
         });
@@ -50,6 +59,7 @@
         body: JSON.stringify({ username, password })
       });
       return response.json();
+
     } catch (error) {
       throw new Error(`Failed to authenticate user: ${error}`);
     }
