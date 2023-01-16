@@ -65,7 +65,6 @@ function getBrowserName(userAgent) {
   }
 }
 
-
 chrome.runtime.sendMessage({type: "getBlacklist"})
 .then(response => {
   blacklist = response.blacklist;
@@ -73,3 +72,10 @@ chrome.runtime.sendMessage({type: "getBlacklist"})
 }).catch(error => {
     console.error(error);
 });
+
+
+// chrome.runtime.sendMessage({type: "sendDevice"}).then(response => {
+//   console.log(response);
+// }).catch(error => {
+//   console.log(error);
+// });

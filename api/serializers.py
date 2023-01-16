@@ -75,3 +75,8 @@ class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReportURL
         fields = '__all__'
+
+class DeviceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Devices
+        fields = '__all__'

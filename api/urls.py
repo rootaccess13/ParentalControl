@@ -9,6 +9,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='auth_register'),
     path('profile/', ProfileViewSet.as_view({'get':'get'}), name='profile'),
     path('analyze/', AnalyzeURLView.as_view(), name='analyze_url'),
+    path('devices/', SaveDevicesView.as_view({'post':'post'}), name='devices'),
     path('urls/', URLListView.as_view(), name='url_list'),
     path('blacklist/', URLBlacklistList.as_view({'get':'get'}), name='blacklist'),
     path('report/', ReportURLView.as_view({'get':'get','post':'post'}), name='report_url')

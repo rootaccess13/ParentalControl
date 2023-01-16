@@ -34,7 +34,7 @@ def mobileRegister(request):
 
 def mobileHome(request):
     context = {
-        'devices': Devices.objects.all()
+        'devices': Devices.objects.all().filter(user=request.user)
     }
     return render(request, 'api/mobile_home.html', context)
 

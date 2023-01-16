@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import UrlType, Profile, URLBlacklist, ReportURL
+from .models import UrlType, Profile, URLBlacklist, ReportURL, Devices
 from . serializers import *
 from rest_framework import status
 from rest_framework.generics import (
@@ -90,5 +90,21 @@ class ReportURLView(viewsets.ModelViewSet):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class SaveDevicesView(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
+    serializer_class = DeviceSerializer
+
+    @action(detail=False, methos=['post'])
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        device = Devices.objects.filter(
+            user=serializer.validated_data['user']
+        )
+        if device.exists():
+            return Response({"messages":"Device already exists"}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
