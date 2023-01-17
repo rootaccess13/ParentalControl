@@ -35,7 +35,7 @@ chrome.runtime.sendMessage({type: "getUsername"})
 
 function getBrowserName(userAgent) {
   // The order matters here, and this may report false positives for unlisted browsers.
-
+  console.log(userAgent);
   if (userAgent.includes("Firefox")) {
     // "Mozilla/5.0 (X11; Linux i686; rv:104.0) Gecko/20100101 Firefox/104.0"
     return "Mozilla Firefox";
@@ -51,9 +51,9 @@ function getBrowserName(userAgent) {
   } else if (userAgent.includes("Edge")) {
     // "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299"
     return "Microsoft Edge (Legacy)";
-  } else if (userAgent.includes("Edg")) {
+  } else if (userAgent.includes("Microsoft Edge (Chromium)")) {
     // "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36 Edg/104.0.1293.70"
-    return "Microsoft Edge (Chromium)";
+    return "Edge";
   } else if (userAgent.includes("Chrome")) {
     // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
     return "Google Chrome/Chromium";

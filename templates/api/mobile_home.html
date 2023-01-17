@@ -31,13 +31,15 @@
     <h1 class="font-semibold mb-4 underline">Connected Browser</h1>
     <div class="grid grid-cols-2 gap-4">
         {% for data in devices %}
-            <div class="relative border-2 border-gray-500 rounded-lg">
+            <div class="relative border-2 border-gray-500 rounded-lg bg-blue-600">
                 <div class="flex justify-end p-2">
                     <span class="font-bold">Active</span>
                 </div>
                 <h1 class="flex justify-center text-lg font-semibold">{{data.device_name}}</h1>
                 {% if data.device_type == "Chrome" %}
                     <img src="https://www.freepnglogos.com/uploads/google-chrome-png-logo/google-chrome-logo-png-0.png" class="w-10 p-2" alt="">
+                {% elif data.device_type == "Edge" %}
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Microsoft_Edge_logo_%282019%29.svg" class="w-10 p-2" alt="">
                 {% endif %}
             </div>
         {% endfor %}
