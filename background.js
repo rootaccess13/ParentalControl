@@ -115,21 +115,21 @@
   chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete') {
         const target = tab.url;
-        // const apiUrl = 'http://127.0.0.1:8000/api/v1/analyze/';
-        // const data = { user: '2', url: target };
-        // AnalyzeURL(data,apiUrl).then(response => {
-        //   var res = JSON.parse(response);
-        //   try{
-        //     if(res.is_secure === false){
-        //       // chrome.tabs.remove(tabId);
-        //       console.log("Explicit")
-        //     }
-        //   }catch(error){
-        //     console.log(error);
-        //   }
-        // }).catch(error => {
-        //   console.log(error);
-        // });
+        const apiUrl = 'http://127.0.0.1:8000/api/v1/analyze/';
+        const data = { user: '2', url: target };
+        AnalyzeURL(data,apiUrl).then(response => {
+          var res = JSON.parse(response);
+          try{
+            if(res.is_secure === false){
+              chrome.tabs.remove(tabId);
+              console.log("Explicit")
+            }
+          }catch(error){
+            console.log(error);
+          }
+        }).catch(error => {
+          console.log(error);
+        });
         getBlacklist().then(response => {
           var res = JSON.parse(response);
           for (const property in res) {
