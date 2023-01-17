@@ -121,7 +121,7 @@
           var res = JSON.parse(response);
           try{
             if(res.is_secure === false){
-              chrome.tabs.remove(tabId);
+              // chrome.tabs.remove(tabId);
               console.log("Explicit")
             }
           }catch(error){
