@@ -28,12 +28,18 @@
       </nav>
       
   <div class="mt-4 mx-auto max-w-xl p-2 justify-center">
+    <h1 class="font-semibold mb-4 underline">Connected Browser</h1>
     <div class="grid grid-cols-2 gap-4">
         {% for data in devices %}
-        <div class="border-2 border-gray-500 rounded-lg">
-            
-            <h1 class="p-4">{{data.device_name}}</h1>
-        </div>
+            <div class="relative border-2 border-gray-500 rounded-lg">
+                <div class="flex justify-end p-2">
+                    <span class="font-bold">Active</span>
+                </div>
+                <h1 class="flex justify-center text-lg font-semibold">{{data.device_name}}</h1>
+                {% if data.device_type == "Chrome" %}
+                    <img src="https://www.freepnglogos.com/uploads/google-chrome-png-logo/google-chrome-logo-png-0.png" class="w-10 p-2" alt="">
+                {% endif %}
+            </div>
         {% endfor %}
       </div>
   </div>
