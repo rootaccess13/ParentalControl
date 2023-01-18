@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import UrlType, Profile, URLBlacklist, ReportURL, Devices
 from . serializers import *
 from rest_framework import status
@@ -108,3 +108,18 @@ class SaveDevicesView(viewsets.ModelViewSet):
             return Response({"messages":"Device already exists"}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class GetStatsView(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, user):
+        url_list = ReportURL.objects.all()
+        data = []
+        for record in url_list:
+            data.append({
+                'type':record.type,
+                'url':record.url,
+                'user':record.user
+            })
+
+        return JsonResponse(data, safe=False)
