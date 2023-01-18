@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
-
-
+from django.utils.text import slugify
+from django.urls import reverse
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -21,10 +21,17 @@ class Devices(models.Model):
     user_agent = models.CharField(max_length=255)
     logged_in = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.user.username)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('device_detail', kwargs={'slug' : self.slug})
 
 class UrlType(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -66,3 +73,4 @@ class ReportURL(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.url} - {self.type}'
+    

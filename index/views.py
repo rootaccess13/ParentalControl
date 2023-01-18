@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+
 from api.models import Profile, UrlType, URLBlacklist, ReportURL
 import re
 from django.contrib import messages
+
 
 def index(request):
     return render(request, 'api/index.html')
