@@ -28,7 +28,9 @@
   "downloads",
   "storage",
   "history",
-  "system"
+  "system",
+  "notifications",
+  "alarms"
 ],
 "host_permissions": [
   "https://127.0.0.1:8000/*"

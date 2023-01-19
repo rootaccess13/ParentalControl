@@ -15,6 +15,15 @@
               }
           }else{
             chrome.storage.local.set({token: token}, function() {
+              chrome.notifications.create({
+                type: "basic",
+                iconUrl: "images/images.jpg",
+                title: "Welcome",
+                message: "Successfully Logged in.",
+                priority: 2
+              }, function(notificationId) {
+                console.log("Notification created with ID: " + notificationId);
+              });
               console.log("Token saved to storage" + token.access);
               // redirect to dashboard.html
               chrome.runtime.sendMessage({type: "redirect", url: "dashboard.html"});
@@ -367,3 +376,15 @@
       return "unknown";
     }
   }
+
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.type === 'block') {
+      chrome.declarativeNetRequest.setExtensionActionOptions({
+        tabUpdate: {
+          tabId: sender.tab.id,
+          increment: msg.count, // Negative values will decrement the count
+        },
+      });
+    }
+  });
+
