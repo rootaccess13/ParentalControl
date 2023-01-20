@@ -23,6 +23,9 @@
               <li>
                 <a href="{% url 'logout_view' %}" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Logout</a>
               </li>
+              <li>
+                <a href="{% url 'mobileaccount' request.user.username %}" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Account</a>
+              </li> 
             </ul>
           </div>
         </div>
@@ -37,7 +40,7 @@
             <div class="flex justify-end p-2">
                 <span class="font-bold text-white">Active</span>
             </div>
-            <h1 class="flex justify-center text-lg font-semibold">{{data.device_name}}</h1>
+            <h1 class="flex justify-center text-lg font-semibold text-white">{{data.device_name}}</h1>
             {% if data.device_type == "Chrome" %}
                 <img src="https://www.freepnglogos.com/uploads/google-chrome-png-logo/google-chrome-logo-png-0.png" class="w-10 p-2" alt="">
             {% elif data.device_type == "Edge" %}
