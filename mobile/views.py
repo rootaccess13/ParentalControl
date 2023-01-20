@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from . forms import RegisterForm
 from api.models import Devices, ReportURL
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.contrib.auth.models import User
 # Create your views here.
 def mobileIndex(request):
     if request.user.is_authenticated:
@@ -54,3 +54,10 @@ def DeviceDetail(request, slug):
         'threats': threats
     }
     return render(request, 'api/device_detail.html', context)
+
+def MobileAccount(request, user):
+    user_data = User.objects.all().filter(username=user)
+    context = {
+        'user':  user_data
+    }
+    return render(request, 'api/mobile_account.html', context)

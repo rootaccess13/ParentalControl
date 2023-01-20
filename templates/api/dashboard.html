@@ -6,16 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parental Control</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
-    <script src="./css/bootstrap.min.js"></script>
-    <script src="./css/popper.js"></script>
+    <link href="./css/flowbite.min.css"  rel="stylesheet" />
   </head>
 <style>
-    body {
-        width: 100%;
-        margin: 10px 10px 10px 10px;
-        padding: 20px;
-    }
+
     #logoutTrigger {
         text-decoration: underline;
         cursor: pointer;
@@ -24,20 +18,27 @@
         color: red;
     }
 </style>
-<body>
-    <div class="container mb-2">
-        <div class="d-flex justify-content-between">
-            <h3>Welcome, <a href="#" id="userLogged"></a>.</h1>
-                <p id="logoutTrigger">Logout</p>
+<body class="max-w-md p-2">
+    <div class="flex flex-col rounded-md border p-2 max-w-md">
+        <div class="flex flex-row justify-between mb-2">
+            <div>
+                <h1 class="text-lg">Welcome, <a href="#" class="font-bold text-lg" id="userLogged"></a>.</h1>
+            </div>
+            <div>
+                <p class="text-lg font-bold" id="logoutTrigger">Logout</p>
+            </div>
         </div>
-        <div class="card mb-2" style="width: 18rem;">
-            <div class="card-body">
-              <h5 class="card-title" id="browserType"></h5>
-              <h6 class="card-subtitle mb-2 text-muted" id="appVersion"></h6>
-                <ul>
-                    <li>Status : Active - Running</li>
+        <div class="flex mb-2" style="width: 18rem;">
+            <div class="flex flex-col p-2">
+              <h1 class="text-lg mb-2 underline" id="browserType"></h1>
+              <h6 class="text-md mb-2 font-semibold" id="appVersion"></h6>
+                <ul class="mb-2">
+                    <li class="font-semibold text-lg">Status : Active - Running</li>
                 </ul>
-              <a href="#" id="activity" class="card-link">Activity</a>
+              <a href="#" id="activity" class="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55">
+                    <span class="mx-auto">Activity</span>
+              </a>
+
             </div>
           </div>
           <p id="list"></p>
@@ -45,6 +46,7 @@
 
     <script src="./css/axios.min.js"></script>
     <script src="./core_dashboard.js"></script>
+    <script src="./css/flowbite.min.js"></script>
 </body>
 
 </html>
