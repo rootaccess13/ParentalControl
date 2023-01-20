@@ -62,7 +62,7 @@
   //Authentication Function
   async function authenticate(username, password) {
     try {
-      const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/login/', {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -76,7 +76,7 @@
   //Register Function
   async function register(username,password, password2, first_name, last_name, email) {
     try {
-      const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/register/', {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username,password, password2, first_name, last_name, email })
@@ -124,7 +124,7 @@
   chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete') {
         const target = tab.url;
-        const apiUrl = 'https://parentalcontrolextension.herokuapp.com/api/v1/analyze/';
+        const apiUrl = 'http://127.0.0.1:8000/api/v1/analyze/';
         const data = { user: '2', url: target };
         AnalyzeURL(data,apiUrl).then(response => {
           var res = JSON.parse(response);
@@ -202,7 +202,7 @@
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + refreshToken
     });
-    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/login/refresh/', {
+    const response = await fetch('http://127.0.0.1:8000/api/v1/login/refresh/', {
         method: 'POST',
         headers: headers,
         body: body
@@ -217,7 +217,7 @@
   chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
     if (request.type === "getUsername") {
       getToken().then(token => {
-          fetch(`https://parentalcontrolextension.herokuapp.com/api/v1/profile/`, {
+          fetch(`http://127.0.0.1:8000/api/v1/profile/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -292,7 +292,7 @@
   }
   //Get Blacklist function
   async function getBlacklist(){
-    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/blacklist/',{
+    const response = await fetch('http://127.0.0.1:8000/api/v1/blacklist/',{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -328,7 +328,7 @@
   async function saveBrowserInstances(id) {
     const userAgent = navigator.userAgent;
     const browser = getBrowserName(userAgent);
-    const device_name = "Koki";
+    const device_name = Math.random().toString(36).substring(2, 7);
     const _id = id;
     var datas = {
       device_name:device_name,
@@ -336,7 +336,7 @@
       user_agent: userAgent,
       user: _id
     }
-    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/devices/', {
+    const response = await fetch('http://127.0.0.1:8000/api/v1/devices/', {
       method: 'POST',
       body: JSON.stringify(datas),
       headers: { 'Content-Type': 'application/json' },
@@ -387,4 +387,3 @@
       });
     }
   });
-

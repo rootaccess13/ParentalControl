@@ -27,7 +27,7 @@ class Devices(models.Model):
         return self.user.username
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.user.username)
+        self.slug = slugify(self.device_name)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -62,7 +62,7 @@ class URLBlacklist(models.Model):
 
 
 class ReportURL(models.Model):
-    user = models.CharField(max_length=50, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     url = models.URLField(max_length=200, blank=True, null=True)
     type = models.CharField(
         max_length = 20,
@@ -72,5 +72,14 @@ class ReportURL(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user} - {self.url} - {self.type}'
+        return f'{self.user.username} - {self.url} - {self.type}'
     
+
+class Reminder(models.Model):
+    user =  models.ForeignKey(User, on_delete=models.CASCADE)
+    device = models.ForeignKey(Devices, on_delete=models.CASCADE)
+    message = models.CharField(max_length=1024, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + " - " + self.device.device_name

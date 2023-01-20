@@ -35,7 +35,8 @@ def mobileRegister(request):
 
 def mobileHome(request):
     context = {
-        'devices': Devices.objects.all().filter(user=request.user)
+        'devices': Devices.objects.all().filter(user=request.user),
+        
     }
     return render(request, 'api/mobile_home.html', context)
 
@@ -61,3 +62,13 @@ def MobileAccount(request, user):
         'user':  user_data
     }
     return render(request, 'api/mobile_account.html', context)
+
+def MobileReminder(request, user):
+    user_instance = User.objects.all().filter(username=user)
+    for data in user_instance:
+        user_devices = Devices.objects.all().filter(user=data.id)
+    context = {
+        'user': user_instance,
+        'devices': user_devices
+    }
+    return render(request, 'api/mobile_reminder.html', context)

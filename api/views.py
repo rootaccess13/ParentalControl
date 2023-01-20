@@ -102,7 +102,8 @@ class SaveDevicesView(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         device = Devices.objects.filter(
-            user=serializer.validated_data['user']
+            user=serializer.validated_data['user'],
+            device_name=serializer.validated_data['device_name']
         )
         if device.exists():
             return Response({"messages":"Device already exists"}, status=status.HTTP_400_BAD_REQUEST)
@@ -123,3 +124,14 @@ class GetStatsView(APIView):
             })
 
         return JsonResponse(data, safe=False)
+
+class CreateReminder(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
+    serializer_class = ReminderSerializer
+
+    @action(detail=False, method=['post'])
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
