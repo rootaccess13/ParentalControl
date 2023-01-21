@@ -127,11 +127,21 @@ class GetStatsView(APIView):
 
 class CreateReminder(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
+    queryset = Reminder.objects.all()
     serializer_class = ReminderSerializer
 
-    @action(detail=False, method=['post'])
-    def post(self, request):
+    def create(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"data":serializer.data, "message":"created"}, status=status.HTTP_201_CREATED)
+class GetReminder(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
+    queryset = Reminder.objects.all()
+    serializer_class = ReminderSerializer
+
+    def get(self,request, users, devices):
+        queryset = self.get_queryset().filter(device=devices, user=users).order_by('-date')
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+

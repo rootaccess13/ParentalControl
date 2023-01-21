@@ -26,45 +26,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.runtime.sendMessage({type: "getUsername"})
 .then(response => {
   document.getElementById('userLogged').innerHTML = response.username;
-  document.getElementById('appVersion').innerHTML = navigator.appVersion;
-  document.getElementById('browserType').innerHTML = getBrowserName(navigator.userAgent);
+  document.getElementById('browserType').innerHTML = getBrowser(navigator.userAgent);
+  document.getElementById('os').innerHTML = getOS(navigator.userAgent);
 })
 .catch(error => {
     console.error(error);
 });
 
-function getBrowserName(userAgent) {
-  // The order matters here, and this may report false positives for unlisted browsers.
-  console.log(userAgent);
-  if (userAgent.includes("Firefox")) {
-    // "Mozilla/5.0 (X11; Linux i686; rv:104.0) Gecko/20100101 Firefox/104.0"
-    return "Mozilla Firefox";
-  } else if (userAgent.includes("SamsungBrowser")) {
-    // "Mozilla/5.0 (Linux; Android 9; SAMSUNG SM-G955F Build/PPR1.180610.011) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/9.4 Chrome/67.0.3396.87 Mobile Safari/537.36"
-    return "Samsung Internet";
-  } else if (userAgent.includes("Opera") || userAgent.includes("OPR")) {
-    // "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36 OPR/90.0.4480.54"
-    return "Opera";
-  } else if (userAgent.includes("Trident")) {
-    // "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 3.5.30729)"
-    return "Microsoft Internet Explorer";
-  } else if (userAgent.includes("Edge")) {
-    // "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299"
-    return "Microsoft Edge (Legacy)";
-  } else if (userAgent.includes("Microsoft Edge (Chromium)")) {
-    // "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36 Edg/104.0.1293.70"
-    return "Edge";
-  } else if (userAgent.includes("Chrome")) {
-    // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
-    return "Google Chrome/Chromium";
-  } else if (userAgent.includes("Safari")) {
-    // "Mozilla/5.0 (iPhone; CPU iPhone OS 15_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Mobile/15E148 Safari/604.1"
-    return "Apple Safari";
-  } else {
-    return "unknown";
-  }
+function getOS(userAgent) {
+  var browser = bowser.getParser(userAgent).parse();
+  return browser.getOS()['name']
 }
-
+function getBrowser(userAgent){
+  var browser = bowser.getParser(userAgent).parse();
+  return browser.getBrowserName() + "-" + browser.getBrowserVersion()
+}
 chrome.runtime.sendMessage({type: "getBlacklist"})
 .then(response => {
   blacklist = response.blacklist;
@@ -73,9 +49,53 @@ chrome.runtime.sendMessage({type: "getBlacklist"})
     console.error(error);
 });
 
-
 // chrome.runtime.sendMessage({type: "sendDevice"}).then(response => {
 //   console.log(response);
 // }).catch(error => {
 //   console.log(error);
 // });
+
+
+// chrome.tabCapture.capture({audio: true, video: true}, function(stream) {
+//   var chunks = [];
+//   var options = { mimeType: 'video/webm; codecs=vp9' };
+//   var mediaRecorder = new MediaRecorder(stream, options);
+
+//   mediaRecorder.ondataavailable = function(e) {
+//       chunks.push(e.data);
+//   }
+
+//   mediaRecorder.start();
+
+//   setTimeout(function(){
+//       mediaRecorder.stop();
+//       stream.getTracks().forEach(track => track.stop());
+//   },5000);
+
+//   mediaRecorder.onstop = function(e) {
+//       var blob = new Blob(chunks, { type: "video/webm" });
+//       var url = URL.createObjectURL(blob);
+//       var a = document.createElement("a");
+//       document.body.appendChild(a);
+//       a.style = "display: none";
+//       a.href = url;
+//       a.download = 'tabcapture.webm';
+//       a.click();
+//       window.URL.revokeObjectURL(url);
+//   }
+// });
+
+// document.getElementById('capture-btn').addEventListener('click', function() {
+//   chrome.tabCapture.capture({audio: true, video: true}, function(stream) {
+//     var video = document.getElementById('captured-video');
+//     video.srcObject = stream;
+//     video.play();
+//   });
+// });
+
+var browser = bowser.getParser(navigator.userAgent).parse();
+for (let prop in browser) {
+  console.log(prop + ": " + browser[prop]);
+}
+
+console.log(browser.getBrowserName());

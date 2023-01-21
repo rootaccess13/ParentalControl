@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
-        chrome.runtime.sendMessage({type: "authenticate", username: username, password: password});
+        var name_device = document.getElementById("name_device").value;
+        chrome.runtime.sendMessage({type: "authenticate", username: username, password: password, name_device: name_device});
     
       });
     }

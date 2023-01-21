@@ -30,7 +30,8 @@
   "history",
   "system",
   "notifications",
-  "alarms"
+  "alarms",
+  "tabCapture"
 ],
 "host_permissions": [
   "https://127.0.0.1:8000/*"
