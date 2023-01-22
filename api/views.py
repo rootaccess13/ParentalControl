@@ -22,7 +22,7 @@ import logging
 from rest_framework import viewsets
 from rest_framework.decorators import action
 
-API_KEY = 'f731b826fc12e56e88bdfc0af7d473de62f7569bc683e02d6f988458eb1b5472'
+API_KEY = '3480df0af8678f7e71c72bc119a4815ca6740222067fdb439569c9cfbb7b3454'
 
 def index(request):
     return HttpResponse("{'message': 'Hello, world!'}")

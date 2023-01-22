@@ -5674,7 +5674,7 @@
       "type": "block"
     },
     "condition": {
-      "urlFilter": "pinayflix.tv",
+      "urlFilter": "pinay.tv",
       "resourceTypes": [
         "main_frame"
       ]

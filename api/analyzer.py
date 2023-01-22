@@ -11,6 +11,7 @@ class Analyzer:
     def analyze(self, url, serializer):
         res = req.get(self.api_url, params={'apikey': self.api_key, 'resource': url, 'scan': 1})
         res = res.json()
+        print(res)
         if res['positives'] > 0:
             serializer.save(is_secure=False)
         scan_data = res['scans']

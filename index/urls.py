@@ -11,7 +11,7 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('dashboard/',dashboard, name='dashboard'),
     path('reporter/', reporter, name='reporter'),
-    path('d/detail/<str:slug>', DeviceDetail, name='device_detail'),
+    path('d/detail/<str:slug>/', DeviceDetail, name='device_detail'),
     path('u/<str:user>/account/', MobileAccount, name='mobileaccount'),
     path('m/reminder/<str:user>/', MobileReminder, name='mobilereminder')
 ]

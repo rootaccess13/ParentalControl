@@ -16,18 +16,19 @@
               }
           }else{
             chrome.storage.local.set({token: token}, function() {
-              chrome.notifications.create({
-                type: "basic",
-                iconUrl: "images/images.jpg",
-                title: "Welcome",
-                message: "Successfully Logged in.",
-                priority: 2
-              }, function(notificationId) {
-                console.log("Notification created with ID: " + notificationId);
-              });
+              
               console.log("Token saved to storage" + token.access);
               // redirect to dashboard.html
               chrome.runtime.sendMessage({type: "redirect", url: "dashboard.html"});
+            });
+            chrome.notifications.create({
+              type: "basic",
+              iconUrl: "images/logo.png",
+              title: "Welcome",
+              message: "Successfully Logged in.",
+              priority: 2
+            }, function(notificationId) {
+              console.log("Sign in Notification created with ID: " + notificationId);
             });
             chrome.storage.local.set({name_device:device_name}, function(){
               console.log("Saved Device name " + device_name);
@@ -66,7 +67,7 @@
   //Authentication Function
   async function authenticate(username, password) {
     try {
-      const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/login/', {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -80,7 +81,7 @@
   //Register Function
   async function register(username,password, password2, first_name, last_name, email) {
     try {
-      const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/register/', {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username,password, password2, first_name, last_name, email })
@@ -128,8 +129,11 @@
   chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete') {
         const target = tab.url;
-        const apiUrl = 'https://parentalcontrolextension.herokuapp.com/api/v1/analyze/';
-        const data = { user: '2', url: target };
+        const apiUrl = 'http://127.0.0.1:8000/api/v1/analyze/';
+        const USER_ID = await getID();
+        const DEVICE_NAME = await getDeviceID();
+        const data = { user: USER_ID.id, url: target, device: DEVICE_NAME.device_id  };
+        console.log(USER_ID.id + " " + DEVICE_NAME.device_id);
         AnalyzeURL(data,apiUrl).then(response => {
           var res = JSON.parse(response);
           try{
@@ -165,6 +169,7 @@
         console.log(ID.id + " " + DEVICE_ID.device_id);
         getReminders(ID.id,DEVICE_ID.device_id);
       }
+
   });
 
   //Get Token from Chrome.storage
@@ -222,7 +227,7 @@ function getDeviceID() {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + refreshToken
     });
-    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/login/refresh/', {
+    const response = await fetch('http://127.0.0.1:8000/api/v1/login/refresh/', {
         method: 'POST',
         headers: headers,
         body: body
@@ -237,7 +242,7 @@ function getDeviceID() {
   chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
     if (request.type === "getUsername") {
       getToken().then(token => {
-          fetch(`https://parentalcontrolextension.herokuapp.com/api/v1/profile/`, {
+          fetch(`http://127.0.0.1:8000/api/v1/profile/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -318,7 +323,7 @@ function getDeviceID() {
   }
   //Get Blacklist function
   async function getBlacklist(){
-    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/blacklist/',{
+    const response = await fetch('http://127.0.0.1:8000/api/v1/blacklist/',{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -373,7 +378,7 @@ async function saveBrowserInstances(id) {
     user_agent: userAgent,
     user: _id
   }
-  const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/devices/', {
+  const response = await fetch('http://127.0.0.1:8000/api/v1/devices/', {
     method: 'POST',
     body: JSON.stringify(datas),
     headers: { 'Content-Type': 'application/json' },
@@ -416,39 +421,64 @@ async function saveBrowserInstances(id) {
   }
 
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    console.log(msg);
     if (msg.type === 'block') {
-      chrome.declarativeNetRequest.setExtensionActionOptions({
-        tabUpdate: {
-          tabId: sender.tab.id,
-          increment: msg.count, // Negative values will decrement the count
-        },
-      });
+      chrome.notifications.create({
+        type: "basic",
+        iconUrl: "images/logo.png",
+        title: "Blocked",
+        message: "Website blocked by Parental Control Extension",
+        priority: 2
+    }, function (notificationId) {
+        console.log("Blocked Notification created with ID: " + notificationId);
+    });
     }
   });
 
-  async function getReminders(user, device){
-    const endpoint = 'https://parentalcontrolextension.herokuapp.com/api/v1/reminder/get/';
-    try {
-        const response = await fetch(`${endpoint}${device}/${user}/`).then(response => response.json())
-        .then(data => {
-          console.log(data[0]['user']);
-          if(data[0]['device'] === device){
-            console.log(true);
-          }
+//   async function getReminders(user, device){
+//     const endpoint = 'http://127.0.0.1:8000/api/v1/reminder/get/';
+//     try {
+//         const response = await fetch(`${endpoint}${device}/${user}/`).then(response => response.json())
+//         .then(data => {
+//           console.log(data[0]['user']);
+//           if(data[0]['device'] === device){
+//             console.log(true);
+//           }
+//           chrome.notifications.create({
+//             type: "basic",
+//             iconUrl: "images/logo.png",
+//             title: "Reminders",
+//             message: data[0]['message'],
+//             priority: 2
+//           }, function(notificationId) {
+//             console.log("Notification created with ID: " + notificationId);
+//           });
+//         });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+async function getReminders(user, device){
+  const endpoint = 'http://127.0.0.1:8000/api/v1/reminder/get/';
+  try {
+      const response = await fetch(`${endpoint}${device}/${user}/`)
+      const data = await response.json();
+      if(data[0]['device'] === device){
           chrome.notifications.create({
-            type: "basic",
-            iconUrl: "images/images.jpg",
-            title: "Reminders",
-            message: data[0]['message'],
-            priority: 2
+              type: "basic",
+              iconUrl: "images/logo.png",
+              title: "Reminders",
+              message: data[0]['message'],
+              priority: 2
           }, function(notificationId) {
-            console.log("Notification created with ID: " + notificationId);
+              console.log("Notification created with ID: " + notificationId);
           });
-        });
-    } catch (error) {
-        console.log(error);
-    }
+      }
+  } catch (error) {
+      console.log(error);
+  }
 }
+
 
 chrome.storage.local.get(null, function(items) {
   console.log(items);

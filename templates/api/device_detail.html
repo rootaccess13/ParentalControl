@@ -61,18 +61,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for data in threats %}
+                        {% for record in threats %}
+                        {% if record.device.device_name == data.device_name %}
                         <tr class="bg-blue-500 border-b border-blue-400">
                             <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
-                                {{data.type}}
+                                {{record.device.device_name}}
                             </th>
                             <td class="px-6 py-4 text-white">
-                                {{data.url}}
+                                {{record.url}}
                             </td>
                             <td class="px-6 py-4 text-white">
-                                {{data.type}}
+                                {{record.type}}
                             </td>
                         </tr>
+                        {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

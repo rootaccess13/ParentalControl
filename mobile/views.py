@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from . forms import RegisterForm
-from api.models import Devices, ReportURL
+from api.models import Devices, ReportURL, UrlType
 from django.contrib.auth.models import User
 # Create your views here.
 def mobileIndex(request):
@@ -45,9 +45,8 @@ def logout_view(request):
 
 def DeviceDetail(request, slug):
     instance = Devices.objects.all().filter(slug=slug)
-    threats = ReportURL.objects.all()
+    threats = UrlType.objects.all().filter(user=request.user)
 
-    # threats = ReportURL.objects.all().filter(user=request.user)
     context = {
         'instance': instance,
         'threats': threats

@@ -4,6 +4,13 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
 from django.urls import reverse
 
+
+TYPE = (
+    ('malware', 'malware'),
+    ('phishing', 'phishing'),
+    ('adult', 'adult'),
+)
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     firstname = models.CharField(max_length=50, blank=True, null=True)
@@ -35,18 +42,19 @@ class Devices(models.Model):
 
 class UrlType(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    device = models.ForeignKey(Devices, on_delete=models.CASCADE, default=1)
     url = models.URLField(max_length=200, blank=True, null=True)
+    type = models.CharField(
+        max_length = 20,
+        choices = TYPE,
+        default = 'adult' ,
+        )
     is_secure = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.url}'
+        return f'{self.user.username} - {self.url} - {self.device.device_name}'
     
-TYPE = (
-    ('malware', 'malware'),
-    ('phishing', 'phishing'),
-    ('adult', 'adult'),
-)
 
 class URLBlacklist(models.Model):
     url = models.URLField(max_length=200, blank=True, null=True)
