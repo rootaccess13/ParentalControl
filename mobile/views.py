@@ -64,11 +64,10 @@ def MobileAccount(request, user):
     return render(request, 'api/mobile_account.html', context)
 
 def MobileReminder(request, user):
-    user_instance = User.objects.all().filter(username=user)
-    for data in user_instance:
-        user_devices = Devices.objects.all().filter(user=data.id)
+    user_instance = User.objects.filter(username=user).first()
+    user_devices = Devices.objects.filter(user=user_instance.id)
     context = {
-        'user': user_instance,
-        'devices': user_devices
+    'user': user_instance,
+    'devices': user_devices
     }
     return render(request, 'api/mobile_reminder.html', context)
