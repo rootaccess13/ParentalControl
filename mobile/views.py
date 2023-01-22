@@ -1,7 +1,7 @@
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from . forms import RegisterForm
 from api.models import Devices, ReportURL
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 # Create your views here.
 def mobileIndex(request):
