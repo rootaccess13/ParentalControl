@@ -5,6 +5,7 @@ import re
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required as lr
 
+
 def index(request):
     return render(request, 'api/index.html')
 
