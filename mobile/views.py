@@ -32,7 +32,6 @@ def mobileRegister(request):
         form = RegisterForm()
     return render(request, 'api/mobile_register.html', {'form': form})
 
-@lr(login_url='mobile_login')
 def mobileHome(request):
     context = {
         'devices': Devices.objects.all().filter(user=request.user),
