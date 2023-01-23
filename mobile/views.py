@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from . forms import RegisterForm
 from api.models import Devices, ReportURL, UrlType
 from django.contrib.auth.models import User
-from django.decorators import login_required as lr
+from django.contrib.auth.decorators import login_required as lr
+
 # Create your views here.
 def mobileIndex(request):
     if request.user.is_authenticated:
@@ -31,7 +32,7 @@ def mobileRegister(request):
     else:
         form = RegisterForm()
     return render(request, 'api/mobile_register.html', {'form': form})
-
+@lr(login_url='mobile_login')
 def mobileHome(request):
     context = {
         'devices': Devices.objects.all().filter(user=request.user),
