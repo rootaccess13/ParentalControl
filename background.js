@@ -98,7 +98,9 @@
         console.log("Token removed from storage");
         chrome.runtime.sendMessage({ type: "redirect", url: "login.html" });
       });
-
+      chrome.storage.local.remove('device_id', function () {
+        console.log("Device ID removed from storage");
+      });
 
     }
   }
