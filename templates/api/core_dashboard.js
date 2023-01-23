@@ -99,3 +99,11 @@ for (let prop in browser) {
 }
 
 console.log(browser.getBrowserName());
+
+chrome.runtime.sendMessage({type: "getDeviceName"})
+.then(response => {
+  document.getElementById('device_name').innerHTML = response.device;
+})
+.catch(error => {
+    console.error(error);
+});

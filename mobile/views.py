@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from . forms import RegisterForm
-from api.models import Devices, ReportURL, UrlType
+from api.models import Devices, ReportURL, UrlType, Reminder
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required as lr
-
+# import messages
+from django.contrib import messages
 # Create your views here.
 def mobileIndex(request):
     if request.user.is_authenticated:
@@ -65,8 +66,25 @@ def MobileAccount(request, user):
 def MobileReminder(request, user):
     user_instance = User.objects.filter(username=user).first()
     user_devices = Devices.objects.filter(user=user_instance.id)
+    reminder = Reminder.objects.filter(user=user_instance.id)
     context = {
     'user': user_instance,
-    'devices': user_devices
+    'devices': user_devices,
+    'reminder': reminder
     }
     return render(request, 'api/mobile_reminder.html', context)
+
+def MobileAccountEdit(request, user):
+    user_instance = User.objects.filter(username=user).first()
+    if request.method == 'POST':
+        user_instance.first_name = request.POST.get('first_name')
+        user_instance.last_name = request.POST.get('last_name')
+        user_instance.email = request.POST.get('email')
+        user_instance.username = request.POST.get('username')
+        user_instance.save()
+        messages.success(request, "Account successfully updated.")
+        return redirect('mobileaccount', user=user_instance.username)
+    context = {
+        'user': user_instance
+    }
+    return render(request, 'api/mobile_edit_account.html', context)

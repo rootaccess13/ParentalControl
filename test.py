@@ -73,30 +73,30 @@
 #     with open("data_new_malicious.json", "w") as json_file:
 #         json.dump(data, json_file, indent=4)
 
-import json
+# import json
 
-with open("phish_5.json", "r") as file:
-    urls = json.load(file)
+# with open("phish_5.json", "r") as file:
+#     urls = json.load(file)
 
-json_list = []
-for i, url in enumerate(urls):
-    data = {
-        "id": i,
-        "priority": 1,
-        "action": {
-            "type": "block"
-        },
-        "condition": {
-            "urlFilter": url,
-            "resourceTypes": [
-                "main_frame"
-            ]
-        }
-    }
-    json_list.append(data)
+# json_list = []
+# for i, url in enumerate(urls):
+#     data = {
+#         "id": i,
+#         "priority": 1,
+#         "action": {
+#             "type": "block"
+#         },
+#         "condition": {
+#             "urlFilter": url,
+#             "resourceTypes": [
+#                 "main_frame"
+#             ]
+#         }
+#     }
+#     json_list.append(data)
 
-with open("rules_7.json", "w") as outfile:
-    json.dump(json_list, outfile, indent=4)
+# with open("rules_7.json", "w") as outfile:
+#     json.dump(json_list, outfile, indent=4)
 
 
 
@@ -116,4 +116,3 @@ with open("rules_7.json", "w") as outfile:
 
 # with open("phish_5.json", "w") as outfile:
 #     json.dump(domains, outfile, indent=4)
-

@@ -12,7 +12,7 @@
     <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
           <a href="{% url 'mobilehome' %}" class="flex items-center">
-              <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
+              <img src="https://i.imgur.com/lFMjJtn.png" class="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
               <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Parental Control</span>
           </a>
           <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
@@ -69,7 +69,26 @@
     </div>
 
   </div>
-  
+  <div class="mt-4 mx-auto max-w-xl p-2 justify-center">
+    <div class="border rounded-lg">
+      {% for data in reminder %}
+      <div class="flex items-center justify-between p-4 border-b">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <img class="w-10 h-10 rounded-full" src="https://i.imgur.com/lFMjJtn.png" alt="">
+          </div>
+          <div class="ml-4">
+            <div class="text-sm font-medium text-gray-900 dark:text-white">{{data.message}}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">{{data.created_at}}</div>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <div class="text-sm text-gray-500 dark:text-gray-400">{{data.device_name}}</div>
+        </div>
+        </div>
+      {% endfor %}
+    </div>
+    </div>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/flowbite.min.js"></script>
   <script>

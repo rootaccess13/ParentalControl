@@ -483,3 +483,12 @@ async function getReminders(user, device){
 chrome.storage.local.get(null, function(items) {
   console.log(items);
 });
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg.type === 'getDeviceName') {
+    chrome.storage.local.get("name_device", function(items) {
+      console.log(items);
+      sendResponse({device: items.name_device});
+    });
+  }
+});

@@ -5505,7 +5505,7 @@
       "type": "block"
     },
     "condition": {
-      "urlFilter": "imgur.com",
+      "urlFilter": "guru.com",
       "resourceTypes": [
         "main_frame"
       ]
