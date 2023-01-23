@@ -32,7 +32,6 @@ def mobileRegister(request):
         form = RegisterForm()
     return render(request, 'api/mobile_register.html', {'form': form})
 
-
 @lr(login_url='mobile_login')
 def mobileHome(request):
     context = {
@@ -45,7 +44,7 @@ def logout_view(request):
     logout(request)
     return redirect('mobile_login')
 
-@lr(login_url='mobile_login')
+
 def DeviceDetail(request, slug):
     instance = Devices.objects.all().filter(slug=slug)
     threats = UrlType.objects.all().filter(user=request.user)
@@ -55,14 +54,14 @@ def DeviceDetail(request, slug):
         'threats': threats
     }
     return render(request, 'api/device_detail.html', context)
-@lr(login_url='mobile_login')
+
 def MobileAccount(request, user):
     user_data = User.objects.all().filter(username=user)
     context = {
         'user':  user_data
     }
     return render(request, 'api/mobile_account.html', context)
-@lr(login_url='mobile_login')
+
 def MobileReminder(request, user):
     user_instance = User.objects.filter(username=user).first()
     user_devices = Devices.objects.filter(user=user_instance.id)
