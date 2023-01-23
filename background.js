@@ -101,7 +101,12 @@
       chrome.storage.local.remove('device_id', function () {
         console.log("Device ID removed from storage");
       });
-
+      chrome.storage.local.remove('name_device', function () {
+        console.log("Device Name removed from storage");
+      });
+      chrome.storage.local.remove('id', function () {
+        console.log("User ID removed from storage");
+      });
     }
   }
   );
