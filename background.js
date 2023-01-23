@@ -67,7 +67,7 @@
   //Authentication Function
   async function authenticate(username, password) {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/login/', {
+      const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -81,7 +81,7 @@
   //Register Function
   async function register(username,password, password2, first_name, last_name, email) {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/register/', {
+      const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username,password, password2, first_name, last_name, email })
@@ -98,6 +98,8 @@
         console.log("Token removed from storage");
         chrome.runtime.sendMessage({ type: "redirect", url: "login.html" });
       });
+
+
     }
   }
   );
@@ -129,7 +131,7 @@
   chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete') {
         const target = tab.url;
-        const apiUrl = 'http://127.0.0.1:8000/api/v1/analyze/';
+        const apiUrl = 'https://parentalcontrolextension.herokuapp.com/api/v1/analyze/';
         const USER_ID = await getID();
         const DEVICE_NAME = await getDeviceID();
         const data = { user: USER_ID.id, url: target, device: DEVICE_NAME.device_id  };
@@ -227,7 +229,7 @@ function getDeviceID() {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + refreshToken
     });
-    const response = await fetch('http://127.0.0.1:8000/api/v1/login/refresh/', {
+    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/login/refresh/', {
         method: 'POST',
         headers: headers,
         body: body
@@ -242,7 +244,7 @@ function getDeviceID() {
   chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
     if (request.type === "getUsername") {
       getToken().then(token => {
-          fetch(`http://127.0.0.1:8000/api/v1/profile/`, {
+          fetch(`https://parentalcontrolextension.herokuapp.com/api/v1/profile/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -323,7 +325,7 @@ function getDeviceID() {
   }
   //Get Blacklist function
   async function getBlacklist(){
-    const response = await fetch('http://127.0.0.1:8000/api/v1/blacklist/',{
+    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/blacklist/',{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -378,7 +380,7 @@ async function saveBrowserInstances(id) {
     user_agent: userAgent,
     user: _id
   }
-  const response = await fetch('http://127.0.0.1:8000/api/v1/devices/', {
+  const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/devices/', {
     method: 'POST',
     body: JSON.stringify(datas),
     headers: { 'Content-Type': 'application/json' },
@@ -459,7 +461,7 @@ async function saveBrowserInstances(id) {
 //     }
 // }
 async function getReminders(user, device){
-  const endpoint = 'http://127.0.0.1:8000/api/v1/reminder/get/';
+  const endpoint = 'https://parentalcontrolextension.herokuapp.com/api/v1/reminder/get/';
   try {
       const response = await fetch(`${endpoint}${device}/${user}/`)
       const data = await response.json();
