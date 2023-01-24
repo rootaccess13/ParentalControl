@@ -50,13 +50,10 @@
                     <thead class="text-xs text-white uppercase bg-blue-600 dark:bg-blue-600 dark:text-white">
                         <tr>
                             <th scope="col" class="px-6 py-3">
-                                Type
+                                Status
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 URL
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Status
                             </th>
                         </tr>
                     </thead>
@@ -65,13 +62,10 @@
                         {% if record.device.device_name == data.device_name %}
                         <tr class="bg-blue-500 border-b border-blue-400">
                             <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
-                                {{record.device.device_name}}
+                                Blocked
                             </th>
                             <td class="px-6 py-4 text-white">
                                 {{record.url}}
-                            </td>
-                            <td class="px-6 py-4 text-white">
-                                {{record.type}}
                             </td>
                         </tr>
                         {% endif %}

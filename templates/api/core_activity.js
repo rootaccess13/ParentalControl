@@ -20,3 +20,11 @@ chrome.runtime.sendMessage({type: "getHistory"}, function(response) {
 
     }
 });
+
+chrome.runtime.sendMessage({type: "getDeviceName"})
+.then(response => {
+  document.getElementById('device_name').innerHTML = response.device;
+})
+.catch(error => {
+    console.error(error);
+});
