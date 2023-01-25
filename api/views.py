@@ -50,8 +50,6 @@ class AnalyzeURLView(generics.CreateAPIView):
         result = self.analyzer.analyze(url, serializer)
         if result['status'] == 'redirect':
             return Response({'message': 'Invalid URL'}, status=status.HTTP_400_BAD_REQUEST)
-        elif result['status'] == 'allowed':
-            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.data, status=status.HTTP_200_OK)
 

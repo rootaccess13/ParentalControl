@@ -128,14 +128,29 @@
   const apiUrl = "https://parentalcontrolextension.herokuapp.com/api/v1/analyze/";
   const redirectUrl = "https://parentalcontrolextension.herokuapp.com/m/stay/safe/";
   let redirect = false;
-  
+  const allowedUrls = [
+      "https://parentalcontrolextension.herokuapp.com/m/stay/safe/",
+      "https://google.com/",
+      "https://www.google.com/",
+      "https://www.google.com/search?q=google+chrome+extensions",
+      "https://youtube.com/",
+      "https://www.youtube.com/",
+      "https://www.youtube.com/results?search_query=",
+      "https://www.youtube.com/watch?v=",
+      "https://www.youtube.com/watch?v=1",
+      "https://www.youtube.com/watch?v=2",
+      "https://facebook.com/",
+      "https://www.facebook.com/",
+  ];
   chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
       if (changeInfo.status === 'complete' && !redirect) {
           const target = tab.url;
           const user = await getID();
           const device = await getDeviceID();
           const data = { user: user.id, url: target, device: device.device_id  };
-  
+          if (allowedUrls.includes(target)) {
+              console.log("Allowed");
+          }else{
           try {
               const response = await AnalyzeURL(data, apiUrl);
               const res = JSON.parse(response);
@@ -160,7 +175,7 @@
           } catch (error) {
               console.log(error);
           }
-  
+      }
           await getReminders(user.id, device.device_id);
       }
   });

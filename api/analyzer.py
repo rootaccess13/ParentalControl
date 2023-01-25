@@ -16,9 +16,6 @@ class Analyzer:
         allowed_url = AllowedWebsite.objects.filter(url=url)
         if check_url:
             return {"status": "redirect"}
-        elif allowed_url:
-            serializer.save(is_secure=True)
-            return {"status": "allowed"}
         else:
             res = req.get(self.api_url, params={'apikey': self.api_key, 'resource': url, 'scan': 1})
             if res.status_code != 200:
