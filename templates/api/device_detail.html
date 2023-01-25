@@ -87,10 +87,10 @@
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Pornography', 'Malware', 'Phishing', 'Scam'],
+        labels: ['Malicious', 'Malware', 'Phishing'],
         datasets: [{
           label: 'Overall blocked',
-          data: [{{num_threats_adult}}, {{num_threats_malware}}, {{num_threats_phishing}}, 5],
+          data: [{{num_threats_malicious}}, {{num_threats_malware}}, {{num_threats_phishing}}],
           borderWidth: 1
         }]
       },

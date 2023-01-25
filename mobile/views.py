@@ -49,13 +49,13 @@ def logout_view(request):
 def DeviceDetail(request, slug):
     instance = Devices.objects.all().filter(slug=slug)
     threats = UrlType.objects.all().filter(user=request.user)
-    num_threats_adult = UrlType.objects.all().filter(user=request.user, type="malware site").count()
+    num_threats_malicious = UrlType.objects.all().filter(user=request.user, type="malware site").count()
     num_threats_malware = UrlType.objects.all().filter(user=request.user, type="malicious site").count()
     num_threats_phishing = UrlType.objects.all().filter(user=request.user, type="phishing site").count()
     context = {
         'instance': instance,
         'threats': threats,
-        'num_threats_adult': num_threats_adult,
+        'num_threats_malicious': num_threats_malicious,
         'num_threats_malware': num_threats_malware,
         'num_threats_phishing': num_threats_phishing,
     }
