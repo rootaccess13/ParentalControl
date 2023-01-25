@@ -49,10 +49,11 @@ def logout_view(request):
 def DeviceDetail(request, slug):
     instance = Devices.objects.all().filter(slug=slug)
     threats = UrlType.objects.all().filter(user=request.user)
-
+    num_threats = UrlType.objects.all().filter(user=request.user).count()
     context = {
         'instance': instance,
-        'threats': threats
+        'threats': threats,
+        'num_threats': num_threats,
     }
     return render(request, 'api/device_detail.html', context)
 
@@ -70,7 +71,7 @@ def MobileReminder(request, user):
     context = {
     'user': user_instance,
     'devices': user_devices,
-    'reminder': reminder
+    'reminder': reminder,
     }
     return render(request, 'api/mobile_reminder.html', context)
 

@@ -70,6 +70,7 @@
                         </tr>
                         {% endif %}
                         {% endfor %}
+                        
                     </tbody>
                 </table>
             </div>
@@ -89,7 +90,7 @@
         labels: ['Pornography', 'Malware', 'Phishing', 'Scam'],
         datasets: [{
           label: 'Overall blocked',
-          data: [12, 45, 3, 5],
+          data: [{{num_threats}}, 45, 3, 5],
           borderWidth: 1
         }]
       },

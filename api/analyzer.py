@@ -25,6 +25,7 @@ class Analyzer:
 
             scan_data = data['scans']
             for key, value in scan_data.items():
+                serializer.save(type=value['result'])
                 if value['detected'] == True:
                     logging.warning(f'{key} - { value["result"] } - {url}')
             return data
