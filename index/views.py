@@ -1,9 +1,10 @@
 
 from django.shortcuts import render, redirect
-from api.models import Profile, UrlType, URLBlacklist, ReportURL
+from api.models import Profile, UrlType, URLBlacklist, ReportURL, Tips
 import re
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required as lr
+import random
 
 
 def index(request):
@@ -36,3 +37,10 @@ def reporter(request):
         'report_list': ReportURL.objects.all()
     }
     return render(request, 'api/reporter.html', context)
+
+def StaySafe(request):
+    random_tips = Tips.objects.order_by('?').first()
+    context = {
+        'tips': random_tips
+    }
+    return render(request, 'api/redirect_error.html', context)

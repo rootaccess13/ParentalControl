@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'index.apps.IndexConfig',
     'corsheaders',
-    'sslserver'
+    'sslserver',
 ]
 
 MIDDLEWARE = [

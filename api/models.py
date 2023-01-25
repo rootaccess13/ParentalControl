@@ -91,3 +91,21 @@ class Reminder(models.Model):
 
     def __str__(self):
         return self.user.username + " - " + self.device.device_name
+
+class Notification(models.Model):
+    user =  models.ForeignKey(User, on_delete=models.CASCADE)
+    device = models.ForeignKey(Devices, on_delete=models.CASCADE)
+    message = models.CharField(max_length=1024, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + " - " + self.device.device_name
+
+class Tips(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    banner = models.URLField(max_length=200, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

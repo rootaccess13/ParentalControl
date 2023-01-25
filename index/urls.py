@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import index, login, dashboard, reporter
-from mobile.views import mobileIndex, mobileHome, mobileRegister, logout_view, DeviceDetail, MobileAccount, MobileReminder, MobileAccountEdit
+from .views import index, login, dashboard, reporter, StaySafe
+from mobile.views import mobileIndex, mobileHome, mobileRegister, logout_view, DeviceDetail, MobileAccount, MobileReminder, MobileAccountEdit, MobileNotification
 urlpatterns = [
     path('', mobileIndex, name='mobile_login'),
     path('mobile/register/',mobileRegister, name='mobile_register'),
@@ -14,5 +14,7 @@ urlpatterns = [
     path('d/detail/<str:slug>/', DeviceDetail, name='device_detail'),
     path('u/<str:user>/account/', MobileAccount, name='mobileaccount'),
     path('m/reminder/<str:user>/', MobileReminder, name='mobilereminder'),
-    path('m/account/edit/<str:user>/', MobileAccountEdit, name='mobileaccountedit')
+    path('m/account/edit/<str:user>/', MobileAccountEdit, name='mobileaccountedit'),
+    path('m/notification/', MobileNotification, name='mobilenotification'),
+    path('m/stay/safe/', StaySafe, name='stay_safe'),
 ]

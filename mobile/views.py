@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from . forms import RegisterForm
-from api.models import Devices, ReportURL, UrlType, Reminder
+from api.models import Devices, ReportURL, UrlType, Reminder, Notification
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required as lr
 # import messages
@@ -88,3 +88,11 @@ def MobileAccountEdit(request, user):
         'user': user_instance
     }
     return render(request, 'api/mobile_edit_account.html', context)
+
+
+def MobileNotification(request):
+    notif = Notification.objects.all().filter(user=request.user)
+    context = {
+        'notification' : notif
+    }
+    return render(request, 'api/notif.html', context)

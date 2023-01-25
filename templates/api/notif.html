@@ -10,7 +10,7 @@
 
     <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
-          <a href="https://flowbite.com/" class="flex items-center">
+          <a href="{% url 'mobilehome' %}" class="flex items-center">
               <img src="https://i.imgur.com/lFMjJtn.png" class="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
               <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Parental Control</span>
           </a>
@@ -22,9 +22,6 @@
             <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <a href="{% url 'mobileaccount' request.user.username %}" class="block mb-2 py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Account</a>
-              </li>
-              <li>
-                <a href="{% url 'mobilenotification' %}" class="block mb-2 py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Notifications</a>
               </li> 
               <li>
                 <a href="{% url 'logout_view' %}" class="block mb-2 py-2 pl-3 pr-4 text-white bg-red-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Logout</a>
@@ -35,29 +32,30 @@
       </nav>
       
   <div class="mt-4 mx-auto max-w-xl p-2 justify-center">
-    <div class="flex flex-inline items-center mb-6">
-    <h1 class="font-semibold underline items-center">Connected Browser</h1>
-    <svg fill="none" stroke="currentColor" class="w-6 items-center ml-2" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"></path>
-    </svg>
-    </div>
-    <div class="grid grid-cols-2 gap-4">
-        {% for data in devices %}
-        <a href="{{data.get_absolute_url}}">
-          <div class="relative border-2 border-gray-500 rounded-lg bg-blue-600">
-            <div class="flex justify-end p-2">
-                <span class="font-bold text-white">Active</span>
+    <!-- Notification -->
+    {% if notification|length > 0 %}
+        {% for data in notification %}
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 mb-2 border border-blue-500">
+                <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <img class="h-10 w-10 rounded-full" src="https://i.imgur.com/lFMjJtn.png" alt="Flowbite Logo">
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100 font-bold">
+                    Parental Control Tips
+                    </p>
+                    <div class="mt-1 text-sm text-gray-700 dark:text-gray-400">
+                    <p>
+                        {{ data.message }}
+                    </p>
+                    </div>
+                </div>
+                </div>
             </div>
-            <h1 class="flex justify-center text-lg font-semibold text-white">{{data.device_name}}</h1>
-            {% if data.device_type == "Chrome" %}
-                <img src="https://www.freepnglogos.com/uploads/google-chrome-png-logo/google-chrome-logo-png-0.png" class="w-10 p-2" alt="">
-            {% elif data.device_type == "Edge" %}
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Microsoft_Edge_logo_%282019%29.svg" class="w-10 p-2" alt="">
-            {% endif %}
-        </div>
-        </a>
         {% endfor %}
-      </div>
+    {% else %}
+    <h1 class="text-center text-lg font-semibold">Empty notification</h1>
+    {% endif %}
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

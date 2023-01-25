@@ -41,13 +41,20 @@ class AnalyzeURLView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     queryset = UrlType.objects.all()
     serializer_class = URLSerializer
+    analyzer = Analyzer(API_KEY)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         url = serializer.validated_data['url']
-        Analyzer(API_KEY).analyze(url, serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        result = self.analyzer.analyze(url, serializer)
+        if result['status'] == 'redirect':
+            return Response({'message': 'Invalid URL'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            
+
         
 class URLListView(generics.ListAPIView):
     queryset = UrlType.objects.all()

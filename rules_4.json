@@ -1567,7 +1567,7 @@
             "type": "block"
         },
         "condition": {
-            "urlFilter": "0662smt.com",
+            "urlFilter": "amazong.com",
             "resourceTypes": [
                 "main_frame"
             ]
