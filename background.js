@@ -128,54 +128,43 @@
   const apiUrl = "https://parentalcontrolextension.herokuapp.com/api/v1/analyze/";
   const redirectUrl = "https://parentalcontrolextension.herokuapp.com/m/stay/safe/";
   let redirect = false;
-  const allowedUrls = [
-      "https://parentalcontrolextension.herokuapp.com/m/stay/safe/",
-      "https://google.com/",
-      "https://www.google.com/",
-      "https://www.google.com/search?q=google+chrome+extensions",
-      "https://youtube.com/",
-      "https://www.youtube.com/",
-      "https://www.youtube.com/results?search_query=",
-      "https://www.youtube.com/watch?v=",
-      "https://www.youtube.com/watch?v=1",
-      "https://www.youtube.com/watch?v=2",
-      "https://facebook.com/",
-      "https://www.facebook.com/",
-  ];
-  chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
+  const allowedUrlsRegex = new RegExp(`^(https?:\/\/(www\.)?parentalcontrolextension\.herokuapp\.com\/m\/stay\/safe\/|https?:\/\/(www\.)?youtube\.com\/|https?:\/\/(www\.)?youtube\.com\/results\?search_query=|https?:\/\/(www\.)?youtube\.com\/watch\?v=|https?:\/\/(www\.)?youtube\.com\/watch\?v=1|https?:\/\/(www\.)?youtube\.com\/watch\?v=2|https?:\/\/(www\.)?facebook\.com\/|chrome:\/\/newtab\/)`, 'i');
+  chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
       if (changeInfo.status === 'complete' && !redirect) {
           const target = tab.url;
+          console.log(target);
           const user = await getID();
           const device = await getDeviceID();
-          const data = { user: user.id, url: target, device: device.device_id  };
-          if (allowedUrls.includes(target)) {
-              console.log("Allowed");
-          }else{
-          try {
-              const response = await AnalyzeURL(data, apiUrl);
-              const res = JSON.parse(response);
+          const data = { user: user.id, url: target, device: device.device_id };
   
-              if(res.status_code === 200) {
-                  if (!res.is_secure) {
-                      console.log("Explicit")
+          if (allowedUrlsRegex.test(target)) {
+            console.log("Allowed");
+        } else {
+              try {
+                  const response = await AnalyzeURL(data, apiUrl);
+                  const res = JSON.parse(response);
+  
+                  if (res.status_code === 200) {
+                      if (!res.is_secure) {
+                          console.log("Explicit")
+                      }
+                  } else {
+                      chrome.tabs.update({ url: redirectUrl });
+                      redirect = true;
                   }
-              } else {
-                  chrome.tabs.update({ url: redirectUrl });
-                  redirect = true;
+              } catch (error) {
+                  console.log(error);
               }
-          } catch (error) {
-              console.log(error);
-          }
   
-          try {
-              const blacklist = await getBlacklist();
-              for (const property in blacklist) {
-                  console.log(property, blacklist[property].url);
+              try {
+                  const blacklist = await getBlacklist();
+                  for (const property in blacklist) {
+                      console.log(property, blacklist[property].url);
+                  }
+              } catch (error) {
+                  console.log(error);
               }
-          } catch (error) {
-              console.log(error);
           }
-      }
           await getReminders(user.id, device.device_id);
       }
   });
