@@ -108,3 +108,11 @@ class Tips(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class AllowedWebsite(models.Model):
+    url = models.URLField(max_length=200, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.url

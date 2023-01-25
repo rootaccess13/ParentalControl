@@ -101,3 +101,8 @@ def MobileNotification(request):
         'notification' : notif
     }
     return render(request, 'api/notif.html', context)
+
+def DeleteReminder(request, id):
+    reminder = Reminder.objects.get(id=id)
+    reminder.delete()
+    return redirect('mobilereminder', user=request.user.username)

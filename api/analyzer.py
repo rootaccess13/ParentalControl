@@ -2,7 +2,7 @@ import requests as req
 from django.shortcuts import render, redirect
 from . serializers import RegisterSerializer, URLSerializer
 import logging
-from . models import UrlType
+from . models import UrlType, AllowedWebsite
 from rest_framework.response import Response
 import concurrent.futures
 from rest_framework import status
@@ -13,8 +13,12 @@ class Analyzer:
 
     def analyze(self, url, serializer):
         check_url = UrlType.objects.filter(url=url)
+        allowed_url = AllowedWebsite.objects.filter(url=url)
         if check_url:
             return {"status": "redirect"}
+        elif allowed_url:
+            serializer.save(is_secure=True)
+            return {"status": "allowed"}
         else:
             res = req.get(self.api_url, params={'apikey': self.api_key, 'resource': url, 'scan': 1})
             if res.status_code != 200:
