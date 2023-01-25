@@ -46,7 +46,6 @@ class UrlType(models.Model):
     url = models.URLField(max_length=200, blank=True, null=True)
     type = models.CharField(
         max_length = 20,
-        choices = TYPE,
         default = 'adult' ,
         )
     is_secure = models.BooleanField(default=True)
