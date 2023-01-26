@@ -514,6 +514,8 @@ chrome.runtime.onSuspend.addListener(async function() {
           console.error('Error:', error);
         }
         );
+});
 
-
+chrome.runtime.onInstalled.addListener(function() {
+  chrome.tabs.create({url: "https://parentalcontrolextension.herokuapp.com/mobile/register/"});
 });
