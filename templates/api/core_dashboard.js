@@ -107,3 +107,4 @@ chrome.runtime.sendMessage({type: "getDeviceName"})
 .catch(error => {
     console.error(error);
 });
+

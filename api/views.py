@@ -152,3 +152,13 @@ class GetReminder(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+class Createnotification(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"data":serializer.data, "message":"created"}, status=status.HTTP_201_CREATED)

@@ -106,3 +106,6 @@ def DeleteReminder(request, id):
     reminder = Reminder.objects.get(id=id)
     reminder.delete()
     return redirect('mobilereminder', user=request.user.username)
+
+def thankyou(request):
+    return render(request, 'api/thankyou.html')

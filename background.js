@@ -128,7 +128,7 @@
   const apiUrl = "https://parentalcontrolextension.herokuapp.com/api/v1/analyze/";
   const redirectUrl = "https://parentalcontrolextension.herokuapp.com/m/stay/safe/";
   let redirect = false;
-  const allowedUrlsRegex = new RegExp(`^(https?:\/\/(www\.)?parentalcontrolextension\.herokuapp\.com\/m\/stay\/safe\/|https?:\/\/(www\.)?youtube\.com\/|https?:\/\/(www\.)?youtube\.com\/results\?search_query=|https?:\/\/(www\.)?youtube\.com\/watch\?v=|https?:\/\/(www\.)?youtube\.com\/watch\?v=1|https?:\/\/(www\.)?youtube\.com\/watch\?v=2|https?:\/\/(www\.)?facebook\.com\/|chrome:\/\/newtab\/)`, 'i');
+  const allowedUrlsRegex = new RegExp(`^(https?:\/\/(www\.)?parentalcontrolextension\.herokuapp\.com\/m\/stay\/safe\/|https?:\/\/(www\.)?youtube\.com\/|https?:\/\/(www\.)?youtube\.com\/results\?search_query=|https?:\/\/(www\.)?youtube\.com\/watch\?v=|https?:\/\/(www\.)?youtube\.com\/watch\?v=1|https?:\/\/(www\.)?youtube\.com\/watch\?v=2|https?:\/\/(www\.)?facebook\.com\/|chrome:\/\/newtab\/|https?:\/\/(www\.)?google\.com\/|https?:\/\/(www\.)?messenger\.com\/)`, 'i');
   chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
       if (changeInfo.status === 'complete' && !redirect) {
           const target = tab.url;
@@ -488,4 +488,32 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       sendResponse({device: items.name_device});
     });
   }
+});
+
+chrome.runtime.setUninstallURL("https://parentalcontrolextension.herokuapp.com/m/thankyou/");
+
+chrome.runtime.onSuspend.addListener(async function() {
+  const ID = await getID();
+  const DEVICE_ID = await getDeviceID();
+  fetch(`http://127.0.0.1:8000/api/v1/notification/create/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "user": ID.id,
+        "device": DEVICE_ID.device_id,
+        "message": "Your child has uninstalled the extension",
+        })
+        })  
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        }
+        );
+
+
 });

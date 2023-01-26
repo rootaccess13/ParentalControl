@@ -91258,5 +91258,18 @@
                 "main_frame"
             ]
         }
+    },
+    {
+        "id": 7021,
+        "priority": 1,
+        "action": {
+            "type": "block"
+        },
+        "condition": {
+            "urlFilter": "piratebayztemzmv.onion",
+            "resourceTypes": [
+                "main_frame"
+            ]
+        }
     }
 ]

@@ -86,3 +86,9 @@ class ReminderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reminder
         fields = '__all__'
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
