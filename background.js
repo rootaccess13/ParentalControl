@@ -128,7 +128,7 @@
   const apiUrl = "https://parentalcontrolextension.herokuapp.com/api/v1/analyze/";
   const redirectUrl = "https://parentalcontrolextension.herokuapp.com/m/stay/safe/";
   let redirect = false;
-  const allowedUrlsRegex = new RegExp(`^(https?:\/\/(www\.)?parentalcontrolextension\.herokuapp\.com\/m\/stay\/safe\/|https?:\/\/(www\.)?youtube\.com\/|https?:\/\/(www\.)?youtube\.com\/results\?search_query=|https?:\/\/(www\.)?youtube\.com\/watch\?v=|https?:\/\/(www\.)?youtube\.com\/watch\?v=1|https?:\/\/(www\.)?youtube\.com\/watch\?v=2|https?:\/\/(www\.)?facebook\.com\/|chrome:\/\/newtab\/|https?:\/\/(www\.)?google\.com\/|https?:\/\/(www\.)?messenger\.com\/)`, 'i');
+  const allowedUrlsRegex = new RegExp(`^(https?:\/\/(www\.)?parentalcontrolextension\.herokuapp\.com\/m\/stay\/safe\/|https?:\/\/(www\.)?youtube\.com\/|https?:\/\/(www\.)?youtube\.com\/results\?search_query=|https?:\/\/(www\.)?youtube\.com\/watch\?v=|https?:\/\/(www\.)?youtube\.com\/watch\?v=1|https?:\/\/(www\.)?youtube\.com\/watch\?v=2|https?:\/\/(www\.)?facebook\.com\/|chrome:\/\/newtab\/|https?:\/\/(www\.)?google\.com\/|https?:\/\/(www\.)?messenger\.com\/|)`, 'i');
   chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
       if (changeInfo.status === 'complete' && !redirect) {
           const target = tab.url;
@@ -514,8 +514,4 @@ chrome.runtime.onSuspend.addListener(async function() {
           console.error('Error:', error);
         }
         );
-});
-
-chrome.runtime.onInstalled.addListener(function() {
-  chrome.tabs.create({url: "https://parentalcontrolextension.herokuapp.com/mobile/register/"});
 });
