@@ -495,7 +495,7 @@ chrome.runtime.setUninstallURL("https://parentalcontrolextension.herokuapp.com/m
 chrome.runtime.onSuspend.addListener(async function() {
   const ID = await getID();
   const DEVICE_ID = await getDeviceID();
-  fetch(`http://127.0.0.1:8000/api/v1/notification/create/`, {
+  fetch(`https://parentalcontrolextension.herokuapp.com/api/v1/notification/create/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
