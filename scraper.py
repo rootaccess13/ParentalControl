@@ -75,7 +75,7 @@
 
 # import json
 
-# with open("phish_5.json", "r") as file:
+# with open("202207.csv", "r") as file:
 #     urls = json.load(file)
 
 # json_list = []
@@ -103,7 +103,7 @@
 # import json
 # from urllib.parse import urlparse
 
-# with open("phish_4.csv", "r") as file:
+# with open("202207.csv", "r") as file:
 #     lines = file.readlines()
 
 # domains = []
@@ -116,3 +116,41 @@
 
 # with open("phish_5.json", "w") as outfile:
 #     json.dump(domains, outfile, indent=4)
+
+import json
+import time
+import urllib.request
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+
+def check_url(url):
+    try:
+        urllib.request.urlopen(url)
+        return url
+    except:
+        return None
+
+def save_working_urls(urls):
+    working_urls = []
+    for url in urls:
+        time.sleep(5)
+        url = check_url(url)
+        if url:
+            working_urls.append(url)
+            logging.info(f'{url} -  malicious URL working. Saving to working.json.')
+            
+        else:
+            logging.info(f'URL is not working')
+    with open("working.json", "w") as f:
+        json.dump(working_urls, f)
+    logging.info(f'{len(working_urls)} working URLs saved to working.json.')
+
+def main():
+    with open("phish_5.json", "r") as f:
+        urls = json.load(f)
+    save_working_urls(urls)
+
+if __name__ == "__main__":
+    main()
+

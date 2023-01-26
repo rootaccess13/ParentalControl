@@ -109,3 +109,9 @@ def DeleteReminder(request, id):
 
 def thankyou(request):
     return render(request, 'api/thankyou.html')
+
+def reset(request):
+    return render(request, 'api/reset.html')
+
+def newpassword(request):
+    return render(request, 'api/new_password.html')
