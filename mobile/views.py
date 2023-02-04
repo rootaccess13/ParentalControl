@@ -115,3 +115,7 @@ def reset(request):
 
 def newpassword(request):
     return render(request, 'api/new_password.html')
+
+
+def adminView(request):
+    return render(request, 'api/admin.html')

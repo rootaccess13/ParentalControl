@@ -17,4 +17,5 @@ urlpatterns = [
     path('reminder/create/', CreateReminder.as_view({'post':'create'}), name='create_reminder'),
     path('reminder/get/<int:devices>/<int:users>/', GetReminder.as_view({'get':'get'}), name='get_reminder'),
     path('notification/create/', Createnotification.as_view({'post':'create'}), name='create_notification'),
+    path('util/getip/', getIP, name="get_ip")
 ]

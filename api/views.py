@@ -162,3 +162,7 @@ class Createnotification(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"data":serializer.data, "message":"created"}, status=status.HTTP_201_CREATED)
+
+def getIP(request):
+    client_ip = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', ''))
+    return JsonResponse({'ip': client_ip})
