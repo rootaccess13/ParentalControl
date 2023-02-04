@@ -515,3 +515,19 @@ chrome.runtime.onSuspend.addListener(async function() {
         }
         );
 });
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.type === "getIP") {
+    fetch(`https://parentalcontrolextension.herokuapp.com/api/v1/util/getip/`, {method: 'GET'})  
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        sendResponse({ ip: data });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      }
+      );
+  }
+}
+);

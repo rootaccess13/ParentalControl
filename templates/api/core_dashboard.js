@@ -108,3 +108,10 @@ chrome.runtime.sendMessage({type: "getDeviceName"})
     console.error(error);
 });
 
+chrome.runtime.sendMessage({type: "getIP"})
+.then(response => {
+  document.getElementById('ip').innerHTML = response.ip;
+})
+.catch(error => {
+    console.error(error);
+});
