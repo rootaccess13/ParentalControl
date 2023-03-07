@@ -116,6 +116,36 @@ def reset(request):
 def newpassword(request):
     return render(request, 'api/new_password.html')
 
-
+@lr(login_url='admin_login')
 def adminView(request):
-    return render(request, 'api/admin.html')
+    list_users = User.objects.all().filter(is_superuser=False)
+    list_reported = ReportURL.objects.all()
+    list_device = Devices.objects.all()
+
+    context = {
+        'list_users': list_users,
+        'list_reported': list_reported,
+        'list_devices': list_device
+    }
+    return render(request, 'api/admin.html', context)
+
+
+def adminLogin(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return redirect('adminview')
+    else:
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None and user.is_superuser:
+                login(request, user)
+                return redirect('adminview')
+            else:
+                return render(request, 'api/admin_login.html', {'error': 'Invalid login credentials.'})
+        else:
+            return render(request, 'api/admin_login.html')
+
+def adminLogout(request):
+    logout(request)
+    return redirect('admin_login')

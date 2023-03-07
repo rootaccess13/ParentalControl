@@ -110,7 +110,7 @@ chrome.runtime.sendMessage({type: "getDeviceName"})
 
 chrome.runtime.sendMessage({type: "getIP"})
 .then(response => {
-  document.getElementById('ip').innerHTML = response.ip;
+  document.getElementById('ip').innerHTML = response.ip.ip;
 })
 .catch(error => {
     console.error(error);

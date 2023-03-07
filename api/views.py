@@ -18,9 +18,14 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 import requests as req
 from . analyzer import Analyzer
-import logging
 from rest_framework import viewsets
 from rest_framework.decorators import action
+import logging
+from sklearn.model_selection import cross_val_score
+
+
+LOGGER = logging.getLogger("ANALYSIS")
+logging.basicConfig(filename='AnalysisLog.log', encodings='utf-8' ,level=logging.INFO)
 
 API_KEY = '3480df0af8678f7e71c72bc119a4815ca6740222067fdb439569c9cfbb7b3454'
 
@@ -37,6 +42,7 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
+
 class AnalyzeURLView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     queryset = UrlType.objects.all()
@@ -48,10 +54,35 @@ class AnalyzeURLView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         url = serializer.validated_data['url']
         result = self.analyzer.analyze(url, serializer)
-        if result['status'] == 'redirect':
-            return Response({'message': 'Invalid URL'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
+
+        # Log the received URL
+        LOGGER.info(" - Received URL for analysis:  %s", url)
+
+        # Exit early if allowed URL
+        if result == False:
+            LOGGER.info(" Allowed URL: %s ", url)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        if result == "timeout":
+            LOGGER.info(" Request Timeout from : %s ", url)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        # Get the number of positive results
+        data = result.get('positives')
+        if data is None:
+            LOGGER.error("Unable to retrieve result for URL: %s", url)
+            return Response({"error": "Unable to retrieve result"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Return the response based on the number of positive results
+        if data > 0:
+            logging.info(" - URL %s found to be insecure - ", url)
+            return Response({"is_secure": "no"}, status=status.HTTP_200_OK)
+        else:
+            logging.info(" - URL %s found to be secure - ", url)
+            return Response({"is_secure": "yes"}, status=status.HTTP_201_CREATED)
+            
+
+
+
+
 
             
 

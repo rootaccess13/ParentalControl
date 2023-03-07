@@ -1,0 +1,9 @@
+INFO:django.utils.autoreload:/Users/mavericktena/Documents/Parental/api/views.py changed, reloading.
+WARNING:django.request:Bad Request: /api/v1/analyze/
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): www.virustotal.com:443
+DEBUG:urllib3.connectionpool:https://www.virustotal.com:443 "GET /vtapi/v2/url/report?apikey=3480df0af8678f7e71c72bc119a4815ca6740222067fdb439569c9cfbb7b3454&resource=https%3A%2F%2Fwww.mitid-approve.20-203-169-150.cprapid.com%2Fnordea_no%2Flogin.php&scan=1 HTTP/1.1" 200 6219
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): www.virustotal.com:443
+DEBUG:urllib3.connectionpool:https://www.virustotal.com:443 "GET /vtapi/v2/url/report?apikey=3480df0af8678f7e71c72bc119a4815ca6740222067fdb439569c9cfbb7b3454&resource=https%3A%2F%2Fwww.mitid-approve.20-203-169-150.cprapid.com%2Fnordea_no%2Flogin.php HTTP/1.1" 200 6219
+INFO:root:Received URL for analysis: https://www.mitid-approve.20-203-169-150.cprapid.com/nordea_no/login.php
+INFO:root:URL https://www.mitid-approve.20-203-169-150.cprapid.com/nordea_no/login.php found to be insecure
+INFO:django.utils.autoreload:/Users/mavericktena/Documents/Parental/api/views.py changed, reloading.

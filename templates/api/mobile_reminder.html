@@ -95,7 +95,7 @@
     const reminder = document.getElementById('message');
     const reminderBtn = document.getElementById('reminderBtn');
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const API = "https://parentalcontrolextension.herokuapp.com/api/v1/reminder/create/";
+    const API = "http://127.0.0.1:8000/api/v1/reminder/create/";
     
     reminderBtn.addEventListener('click', (event) => {
         event.preventDefault();

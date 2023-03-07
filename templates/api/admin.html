@@ -12,7 +12,7 @@
     <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
           <a href="{% url 'mobilehome' %}" class="flex items-center">
-              <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Parental Control</span>
+              <span class="self-center text-xl font-bold whitespace-nowrap dark:text-white">Parental Control | <span class="text-red-800 font-bold">Admin Page</span>
           </a>
           <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
@@ -21,24 +21,159 @@
           <div class="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
-                <a href="{% url 'logout_view' %}" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Logout</a>
+                <a href="{% url 'admin_logout' %}" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Logout</a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
       
-  <div class="mt-4 mx-auto max-w-xl p-2 justify-center">
-    <div class="w-full border rounded-md p-2">
-        <h1 class="font-semibold text-md">Username: {{request.user.username}}</h1>
+  <div class="mt-4 mx-auto w-full p-4 justify-center">
+    <div class="flex flex-col rounded-md border mb-2 p-4 bg-gray-100 items-center">
+      <svg fill="none" class="w-14" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"></path>
+      </svg>
+        <h1 class="font-bold text-md text-center underline text-blue-600">{{request.user.username}}</h1>
         {% if request.user.is_superuser %}
-            <h1 class="font-semibold text-md">Role: Admin</h1>
-        {% endif %}
-        {% if request.user.is_active %}
-            <h1 class="font-semibold text-md">Active: True</h1>
+            <h1 class="font-semibold text-sm uppercase">Admin</h1>
         {% endif %}
     </div>
+    <div class="grid grid-cols-2 rounded-md border mb-2 p-4 bg-gray-100">
+      <div>
+        <h1 class="text-md font-semibold">Firstname : <span class="text-blue-500"> {{request.user.first_name}}</span></h1>
+        <h1 class="text-md font-semibold">Lastname : <span class="text-blue-500"> {{request.user.last_name}}</span></h1>
+        <h1 class="text-md font-semibold">Email : <span class="text-blue-500"> {{request.user.email}}</span></h1>
+      </div>
+      <div>
+        <h1 class="text-md font-semibold">Date Joined : <span class="text-blue-500"> {{request.user.date_joined}}</span></h1>
+        <h1 class="text-md font-semibold">Last Login : <span class="text-blue-500"> {{request.user.last_login}}</span></h1>
+        <h1 class="text-md font-semibold">Active : <span class="text-blue-500"> {{request.user.is_active}}</span></h1>
+      </div>
+    </div>
+
+      <div class="relative overflow-x-auto border sm:rounded-lg mb-2">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <caption class="p-5 text-lg font-semibold text-left text-blue-500 bg-white dark:text-white dark:bg-gray-800 underline">
+                List of Users
+            </caption>
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Username
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Email Address
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Firstname
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Lastname
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for user in list_users %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{user.username}}
+                    </th>
+                    <td class="px-6 py-4">
+                      {{user.email}}
+                    </td>
+                    <td class="px-6 py-4">
+                      {{user.first_name}}
+                    </td>
+                    <td class="px-6 py-4">
+                      {{user.last_name}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="relative overflow-x-auto border sm:rounded-lg mb-2">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <caption class="p-5 text-lg font-semibold text-left text-blue-500 bg-white dark:text-white dark:bg-gray-800 underline">
+              List of Devices
+          </caption>
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="px-6 py-3">
+                      Parents
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Device Name
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Device Type
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      User-Agents
+                  </th>
+
+              </tr>
+          </thead>
+          <tbody>
+            {% for device in list_devices %}
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      {{device.user.username}}
+                  </th>
+                  <td class="px-6 py-4">
+                    {{device.device_name}}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{device.device_type}}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{device.user_agent}}
+                  </td>
+
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
   </div>
+    <div class="relative overflow-x-auto border sm:rounded-lg mb-2">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <caption class="p-5 text-lg font-semibold text-left text-blue-500 bg-white dark:text-white dark:bg-gray-800 underline">
+              List of Reported Urls
+          </caption>
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="px-6 py-3">
+                      Username
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      URL
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Type
+                  </th>
+
+              </tr>
+          </thead>
+          <tbody>
+            {% for site in list_reported %}
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      {{site.user.username}}
+                  </th>
+                  <td class="px-6 py-4">
+                    {{site.url}}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{site.type}}
+                  </td>
+
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+    
+    </div>
   
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/flowbite.min.js"></script>

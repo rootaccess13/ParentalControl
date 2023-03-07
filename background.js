@@ -67,7 +67,7 @@
   //Authentication Function
   async function authenticate(username, password) {
     try {
-      const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/login/', {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -81,7 +81,7 @@
   //Register Function
   async function register(username,password, password2, first_name, last_name, email) {
     try {
-      const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/register/', {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username,password, password2, first_name, last_name, email })
@@ -125,8 +125,8 @@
       }
     }
   );
-  const apiUrl = "https://parentalcontrolextension.herokuapp.com/api/v1/analyze/";
-  const redirectUrl = "https://parentalcontrolextension.herokuapp.com/m/stay/safe/";
+  const apiUrl = "http://127.0.0.1:8000/api/v1/analyze/";
+  const redirectUrl = "http://127.0.0.1:8000/m/stay/safe/";
   let redirect = false;
   const allowedUrlsRegex = new RegExp(`^(https?:\/\/(www\.)?parentalcontrolextension\.herokuapp\.com\/m\/stay\/safe\/|https?:\/\/(www\.)?youtube\.com\/|https?:\/\/(www\.)?youtube\.com\/results\?search_query=|https?:\/\/(www\.)?youtube\.com\/watch\?v=|https?:\/\/(www\.)?youtube\.com\/watch\?v=1|https?:\/\/(www\.)?youtube\.com\/watch\?v=2|https?:\/\/(www\.)?facebook\.com\/|chrome:\/\/newtab\/|https?:\/\/(www\.)?google\.com\/|https?:\/\/(www\.)?messenger\.com\/|)`, 'i');
   chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
@@ -136,21 +136,12 @@
           const user = await getID();
           const device = await getDeviceID();
           const data = { user: user.id, url: target, device: device.device_id };
-  
-          if (allowedUrlsRegex.test(target)) {
-            console.log("Allowed");
-        } else {
+
               try {
                   const response = await AnalyzeURL(data, apiUrl);
                   const res = JSON.parse(response);
-  
-                  if (res.status_code === 200) {
-                      if (!res.is_secure) {
-                          console.log("Explicit")
-                      }
-                  } else {
-                      chrome.tabs.update({ url: redirectUrl });
-                      redirect = true;
+                  if(res.is_secure === "no"){
+                    chrome.tabs.remove(tabId);
                   }
               } catch (error) {
                   console.log(error);
@@ -164,7 +155,7 @@
               } catch (error) {
                   console.log(error);
               }
-          }
+
           await getReminders(user.id, device.device_id);
       }
   });
@@ -224,7 +215,7 @@ function getDeviceID() {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + refreshToken
     });
-    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/login/refresh/', {
+    const response = await fetch('http://127.0.0.1:8000/api/v1/login/refresh/', {
         method: 'POST',
         headers: headers,
         body: body
@@ -239,7 +230,7 @@ function getDeviceID() {
   chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
     if (request.type === "getUsername") {
       getToken().then(token => {
-          fetch(`https://parentalcontrolextension.herokuapp.com/api/v1/profile/`, {
+          fetch(`http://127.0.0.1:8000/api/v1/profile/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -320,7 +311,7 @@ function getDeviceID() {
   }
   //Get Blacklist function
   async function getBlacklist(){
-    const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/blacklist/',{
+    const response = await fetch('http://127.0.0.1:8000/api/v1/blacklist/',{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -375,7 +366,7 @@ async function saveBrowserInstances(id) {
     user_agent: userAgent,
     user: _id
   }
-  const response = await fetch('https://parentalcontrolextension.herokuapp.com/api/v1/devices/', {
+  const response = await fetch('http://127.0.0.1:8000/api/v1/devices/', {
     method: 'POST',
     body: JSON.stringify(datas),
     headers: { 'Content-Type': 'application/json' },
@@ -456,7 +447,7 @@ async function saveBrowserInstances(id) {
 //     }
 // }
 async function getReminders(user, device){
-  const endpoint = 'https://parentalcontrolextension.herokuapp.com/api/v1/reminder/get/';
+  const endpoint = 'http://127.0.0.1:8000/api/v1/reminder/get/';
   try {
       const response = await fetch(`${endpoint}${device}/${user}/`)
       const data = await response.json();
@@ -490,12 +481,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
-chrome.runtime.setUninstallURL("https://parentalcontrolextension.herokuapp.com/m/thankyou/");
+chrome.runtime.setUninstallURL("http://127.0.0.1:8000/m/thankyou/");
 
 chrome.runtime.onSuspend.addListener(async function() {
   const ID = await getID();
   const DEVICE_ID = await getDeviceID();
-  fetch(`https://parentalcontrolextension.herokuapp.com/api/v1/notification/create/`, {
+  fetch(`http://127.0.0.1:8000/api/v1/notification/create/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -518,7 +509,7 @@ chrome.runtime.onSuspend.addListener(async function() {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.type === "getIP") {
-    fetch(`https://parentalcontrolextension.herokuapp.com/api/v1/util/getip/`, {method: 'GET'})  
+    fetch(`http://127.0.0.1:8000/api/v1/util/getip/`, {method: 'GET'})  
       .then(response => response.json())
       .then(data => {
         console.log('Success:', data);
